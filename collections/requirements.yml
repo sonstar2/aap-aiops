@@ -7,3 +7,4 @@ collections:
   # - name: ansible.eda
   - name: infra.aap_configuration
   - name: ansible.scm
+  - name: community.general
