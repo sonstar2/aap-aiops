@@ -1,0 +1,25 @@
+---
+eda_rulebook_activations:
+  - name: Web App
+    description: Capture service errors
+    organization: Default
+    project: ai-eda
+    rulebook: web_app.yml
+    eda_credentials:
+      - AAP
+    decision_environment: Kafka Decision Environment
+    enabled: false
+    state: absent
+
+  - name: AIOps
+    description: Capture service errors
+    organization: Default
+    project: ai-eda
+    rulebook: web_app.yml
+    eda_credentials:
+      - AAP
+    decision_environment: Kafka Decision Environment
+    extra_vars:
+      workflow_template_name: AIOps Auto Healing
+    enabled: true
+    state: present

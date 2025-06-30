@@ -20,6 +20,19 @@
       tags:
         - always
 
+    - name: Create dummy lighspeed_playbook
+      ansible.builtin.include_tasks: dummy_pr.yml
+
+    - name: Project Sync
+      ansible.controller.project_update:
+        name: Lightspeed-Playbooks
+        organization: 'Default'
+        controller_host: "{{ aap_hostname }}"
+        controller_username: "{{ aap_username }}"
+        controller_password: "{{ aap_password }}"
+        wait: true
+        timeout: 120
+
     - name: Call all roles
       ansible.builtin.include_role:
         # name: infra.controller_configuration.dispatch

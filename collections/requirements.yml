@@ -6,3 +6,4 @@ collections:
   # - name: ansible.controller
   # - name: ansible.eda
   - name: infra.aap_configuration
+  - name: ansible.scm

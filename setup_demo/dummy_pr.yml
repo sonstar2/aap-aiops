@@ -1,0 +1,44 @@
+
+- name: Set input variables for repository
+  ansible.builtin.set_fact:
+    repo_name: "{{ input_repo_name | default('lightspeed_playbooks') }}"
+    repo_description: "{{ input_repo_description | default('Repository for Lightspeed Ansible Playbooks') }}"
+
+- name: Retrieve existing repository or initialize it locally
+  ansible.scm.git_retrieve:
+    branch:
+      duplicate_detection: false
+      name: main
+    origin:
+      url: "{{ gitea_url }}/lab-user/{{ repo_name }}.git"
+      token: "{{ gitea_token }}"
+  register: repository
+
+#########################################################################
+# Safety guard - Ensure AI-generated playbook works with lab inventory #
+#########################################################################
+
+- name: Ensure execution readiness for AI-generated playbook
+  block:
+
+    - name: Parse Lightspeed playbook into structured data
+      ansible.builtin.set_fact:
+        lightspeed_playbook: |-
+          ---
+          - name: dummy
+            hosts: all
+            tasks:
+              - name: debug
+                msg: 'test'
+
+
+- name: Save parsed Lightspeed playbook to YAML file
+  ansible.builtin.copy:
+    content: "{{ lightspeed_playbook }}"
+    dest: "{{ repository['path'] }}/lightspeed-response.yml"
+    mode: '0644'
+
+- name: Commit and push final version of playbook to Gitea
+  ansible.scm.git_publish:
+    path: "{{ repository['path'] }}"
+    token: "{{ gitea_token }}"
