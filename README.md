@@ -10,8 +10,30 @@ This project builds upon the foundational concepts from LB2961 to create a compr
 
 - Ansible Automation Platform (AAP) environment
 - Access to a Gitea repository
-- ServiceNow instance access
+- ServiceNow Developer instance (see preparation steps below)
+- Mattermost server access
 - Valid credentials for all systems
+
+## Preparation
+
+### ServiceNow Developer Instance Setup
+
+Before running the setup playbook, you'll need to configure a ServiceNow Developer instance:
+
+1. **Create Developer Instance**: 
+   - Go to [ServiceNow Developer Portal](https://developer.servicenow.com)
+   - Sign up for a free developer account if you don't have one
+   - Request a new developer instance (this may take a few minutes to provision)
+
+2. **Configure Instance Access**:
+   - Note your instance URL (format: `https://devXXXXX.service-now.com`)
+   - Use your developer account credentials for `snow_username` and `snow_password`
+   - Ensure the instance is active and accessible
+
+3. **Verify Instance Readiness**:
+   - Log into your ServiceNow instance
+   - Navigate to System Definition → Tables to confirm access
+   - The instance should be ready for API integration
 
 ## Quick Setup
 
