@@ -1,0 +1,24 @@
+---
+- name: Create a change request
+  hosts: all
+  gather_facts: false
+  connection: local
+
+  vars:
+    servicenow_cr: CR_Slack_MM_Wait
+    cr_short_description: "Code Review Change Request"
+    cr_description: |-
+      Ansible Playbook has been generated automatically using Lightspeed.
+      LightSpeed Prompt: "{{ lightspeed_prompt }}"
+      
+      Generated Playbook:
+      {{ lightspeed_playbook | to_nice_yaml(sort_keys=False) }}
+      
+      Once Approved, the code will be pushed into the below source control:
+      https://bastion.8ngbs.sandbox5571.opentlc.com:488/lab-user/lightspeed_playbooks/src/branch/main/lightspeed-response.yml
+
+  roles:
+    - snow_change_request
+  run_once: true
+
+

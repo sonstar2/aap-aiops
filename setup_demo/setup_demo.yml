@@ -1,0 +1,28 @@
+---
+- name: Configure Automation Controller
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: false
+
+  # vars:
+  #   controller_configuration_instance_groups_enforce_defaults: true
+  #   controller_configuration_credentials_secure_logging: false
+  vars:
+    # aap_hostname:
+    # aap_username: 
+    # aap_password: 
+
+  tasks:
+    - name: Include vars from configs directory
+      ansible.builtin.include_vars:
+        dir: "{{ controller_configs_dir | default('./configs') }}"
+        extensions: ["yaml"]
+      tags:
+        - always
+
+    - name: Call all roles
+      ansible.builtin.include_role:
+        # name: infra.controller_configuration.dispatch
+        name: infra.aap_configuration.dispatch
+
+

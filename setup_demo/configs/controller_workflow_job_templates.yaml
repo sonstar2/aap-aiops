@@ -1,0 +1,90 @@
+---
+controller_workflows:
+  - name: "AIOps Auto Healing"
+    description: !unsafe ''
+    organization: "Default"
+    simplified_workflow_nodes:
+      - identifier: "0968bd2e-2bfb-4d97-85fb-2343bdd8cc7a"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "🤖 RHEL AI: Analyze Incident"
+        limit: ""
+        organization: "Default"
+        all_parents_must_converge: "False"
+        success_nodes:
+          - "c628cd9a-d64a-4505-8e4d-d83b147f662d"
+      - identifier: "0bd6a342-2904-4660-bca3-7170c35ea3db"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "⚙️ Apache Service Status Check"
+        limit: ""
+        organization: "Default"
+        all_parents_must_converge: "False"
+        success_nodes:
+          - "0968bd2e-2bfb-4d97-85fb-2343bdd8cc7a"
+      - identifier: "4270b12e-087b-439b-937e-d3a060d5d6f2"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "🧾 Commit Fix to Gitea"
+        limit: ""
+        organization: "Default"
+        all_parents_must_converge: "False"
+        success_nodes:
+          - "Sync Playbooks"
+      - identifier: "Remediate"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "🔧✅ Execute HTTPD Remediation"
+        limit: "node1"
+        organization: "Default"
+        all_parents_must_converge: "False"
+      - identifier: "Sync Playbooks"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "Lightspeed-Playbooks"
+        limit: ""
+        organization: "Default"
+        all_parents_must_converge: "False"
+        success_nodes:
+          - "Remediate"
+      - identifier: "658b7035-7134-4bd8-ba1f-b1fc6de191d3"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "🧠 Lightspeed Remediation Playbook Generator"
+        limit: ""
+        organization: "Default"
+        all_parents_must_converge: "False"
+        success_nodes:
+          - "b6343d57-86dc-462b-9e55-740ca0dd931f"
+      - identifier: "b6343d57-86dc-462b-9e55-740ca0dd931f"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "Raise Change Request"
+        limit: ""
+        organization: "Default"
+        all_parents_must_converge: "False"
+        success_nodes:
+          - "4270b12e-087b-439b-937e-d3a060d5d6f2"
+      - identifier: "c628cd9a-d64a-4505-8e4d-d83b147f662d"
+        workflow_job_template: "AIOps Auto Healing"
+        unified_job_template: "📣 Notify via Mattermost"
+        limit: ""
+        organization: "Default"
+        all_parents_must_converge: "False"
+        success_nodes:
+          - "658b7035-7134-4bd8-ba1f-b1fc6de191d3"
+    ask_variables_on_launch: "False"
+    allow_simultaneous: "False"
+    scm_branch: ""
+    limit: "node1"
+    ask_limit_on_launch: false
+    ask_inventory_on_launch: false
+    webhook_service: ""
+    extra_vars: ""
+    survey_enabled: true
+    survey_spec:
+      name: ""
+      spec:
+        - max: 1024
+          min: 0
+          type: text
+          default: !unsafe "For all hosts, use become true,  Remove line that contains InvalidDirectiveHere from /etc/httpd/conf/httpd.conf and restart httpd"
+          required: False
+          variable: lightspeed_prompt
+          new_question: False
+          question_name: !unsafe "LightSpeed Prompt"
+      description: ""
+

@@ -1,0 +1,72 @@
+---
+- name: Create ServiceNow Change Request
+  servicenow.itsm.change_request:
+    type: normal
+    short_description: "{{ cr_short_description }}"
+    description: "{{ cr_description }}"
+    priority: high
+    risk: moderate
+    impact: low
+    assignment_group: CAB Approval
+    state: assess
+  register: request
+  until: request.changed is defined
+  retries: 5
+  delay: 5
+  delegate_to: localhost
+
+- name: Pass along request information
+  ansible.builtin.set_stats:
+    data:
+      request: "{{ request }}"
+    per_host: false
+  delegate_to: localhost
+
+# ==== Matter Most Message  ====#
+- name: Fail if required variables are not set
+  ansible.builtin.fail:
+    msg: "Both Mattermost Instance and token must be set!"
+  when: mattermost_instance | default('') | trim == '' or mattermost_token | default('') | trim == ''
+
+- name: Set systemd facts
+  ansible.builtin.set_fact:
+    linux_service: "{{ input_linux_service | default('httpd') }}"
+    matter_most_format: |-
+      ``` yaml
+      {{ lightspeed_playbook }}
+      ```
+
+- name: Send error notification message via Mattermost
+  community.general.mattermost:
+    url: "{{ mattermost_instance }}"
+    api_key: "{{ mattermost_token }}"
+    attachments:
+      - text: "!!!! LightSpeed Code Assistent !!!!"
+        color: "#ff00dd"
+        title: "Remediation Ansible Playbook is created automatically by LightSpeed"
+        fields:
+          - title: Please Review the Change Record
+            value: "<{{ lookup('ansible.builtin.env', 'SN_HOST') }}/nav_to.do?uri=change_request.do?sysparm_query=number={{request.record.number }}>"
+            short: true
+          - title: Ansible Playbook
+            value: "{{ matter_most_format }}"
+            short: true
+  delegate_to: localhost
+  when: (lightspeed_playbook | default('') | length) > 0
+#====
+
+- name: Wait for Change Request approval
+  servicenow.itsm.change_request_info:
+    number: "{{ request.record.number }}"
+  until: change_request_status.records[0].state == "scheduled"
+  retries: 50
+  delay: 10
+  register: change_request_status
+  delegate_to: localhost
+
+- name: Update to implement the change request in ServiceNow
+  servicenow.itsm.change_request:
+    state: implement
+    number: "{{ request.record.number }}"
+    assignment_group: CAB Approval
+  delegate_to: localhost
