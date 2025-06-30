@@ -83,7 +83,10 @@ AAP-aiops/
 │       ├── controller_workflow_job_templates.yaml # Workflow templates
 │       └── eda_rulebook_activation.yaml       # Event-Driven Ansible rulebook config
 ├── README.md                                   # This file
-└── [additional project files]
+└── roles
+|   └── snow_change_request
+└── playbooks
+    └── snow_create_cr_wait_mm.yml
 ```
 
 ## Features
