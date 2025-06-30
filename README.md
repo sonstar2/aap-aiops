@@ -26,7 +26,9 @@ ansible-playbook setup_demo/setup_demo.yml \
   -e 'gitea_token=<YOUR_GITEA_TOKEN>' \
   -e 'snow_instance=<YOUR_SNOW_INSTANCE>' \
   -e 'snow_username=<YOUR_SNOW_USERNAME>' \
-  -e 'snow_password=<YOUR_SNOW_PASSWORD>'
+  -e 'snow_password=<YOUR_SNOW_PASSWORD>' \
+  -e 'mattermost_instance=<YOUR_MATTERMOST_INSTANCE>' \
+  -e 'mattermost_token=<YOUR_MATTERMOST_TOKEN>'
 ```
 
 ### Required Parameters
@@ -41,6 +43,8 @@ ansible-playbook setup_demo/setup_demo.yml \
 | `snow_instance` | ServiceNow instance URL | `https://dev12345.service-now.com` |
 | `snow_username` | ServiceNow username | `admin` |
 | `snow_password` | ServiceNow password | `your-snow-password` |
+| `mattermost_instance` | Mattermost server URL | `https://mattermost.example.com` |
+| `mattermost_token` | Mattermost authentication token | `your-mattermost-token` |
 
 
 ## Project Structure

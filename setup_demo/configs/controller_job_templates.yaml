@@ -35,8 +35,8 @@ controller_templates:
     ask_timeout_on_launch: false
     ask_instance_groups_on_launch: false
     extra_vars:
-      mattermost_instance: 'Change Me'
-      mattermost_token: 'Change Me'
+      mattermost_instance: "{{ mattermost_instance }}"
+      mattermost_token: "{{ mattermost_token }}"
     job_tags: ""
     force_handlers: false
     skip_tags: ""
