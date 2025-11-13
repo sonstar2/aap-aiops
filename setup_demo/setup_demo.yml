@@ -32,6 +32,7 @@
         controller_password: "{{ aap_password }}"
         wait: true
         timeout: 120
+        validate_certs: false
 
     - name: Call all roles
       ansible.builtin.include_role:

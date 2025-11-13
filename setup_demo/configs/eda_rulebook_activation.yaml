@@ -18,7 +18,7 @@ eda_rulebook_activations:
     rulebook: web_app.yml
     eda_credentials:
       - AAP
-    decision_environment: Kafka Decision Environment
+    decision_environment: Default Decision Environment
     extra_vars:
       workflow_template_name: AIOps Auto Healing
     enabled: true

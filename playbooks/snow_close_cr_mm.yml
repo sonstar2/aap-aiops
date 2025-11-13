@@ -1,0 +1,14 @@
+---
+- name: Close a change request
+  hosts: all
+  gather_facts: false
+  connection: local
+
+  vars:
+    servicenow_cr: CR_Close_MM
+
+  roles:
+    - snow_change_request
+  run_once: true
+
+

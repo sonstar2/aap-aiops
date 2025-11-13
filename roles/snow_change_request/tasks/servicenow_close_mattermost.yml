@@ -1,0 +1,38 @@
+---
+- name: Place a change request in ServiceNow in Review
+  servicenow.itsm.change_request:
+    state: review
+    number: "{{ request.record.number }}"
+  delegate_to: localhost
+
+- name: Close a change request
+  servicenow.itsm.change_request:
+    state: closed
+    number: "{{ request.record.number }}"
+    close_code: "{{ close_code }}"
+    close_notes: "{{ close_notes }}"
+  delegate_to: localhost
+
+
+# ==== Matter Most Message  ====#
+- name: Fail if required variables are not set
+  ansible.builtin.fail:
+    msg: "Both Mattermost Instance and token must be set!"
+  when: mattermost_instance | default('') | trim == '' or mattermost_token | default('') | trim == ''
+
+- name: Send notification message via Mattermost
+  community.general.mattermost:
+    url: "{{ mattermost_instance }}"
+    api_key: "{{ mattermost_token }}"
+    attachments:
+      - text: "!!!! Change Record has been closed !!!!"
+        color: "#ff00dd"
+        title: "Remediation completed for Change Record: {{ request.record.number }}"
+        fields:
+          - title: Please check the Change Record
+            value: "<{{ lookup('ansible.builtin.env', 'SN_HOST') }}/nav_to.do?uri=change_request.do?sysparm_query=number={{request.record.number }}>"
+            short: true
+  delegate_to: localhost
+#====
+
+
