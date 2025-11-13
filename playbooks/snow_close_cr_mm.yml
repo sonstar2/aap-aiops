@@ -6,6 +6,8 @@
 
   vars:
     servicenow_cr: CR_Close_MM
+    close_code: "successful"
+    close_notes: "Change Request closed after successful remediation via Mattermost notification."
 
   roles:
     - snow_change_request
