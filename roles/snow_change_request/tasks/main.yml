@@ -5,6 +5,11 @@
   when:
     - servicenow_cr == "CR_Slack_MM_Wait"
 
+- name: Close CR_Mattermost
+  ansible.builtin.include_tasks: servicenow_close_mattermost.yml
+  when:
+    - servicenow_cr == "CR_Close_MM"
+
 - name: Close CR
   ansible.builtin.include_tasks: servicenow_close.yml
   when:
